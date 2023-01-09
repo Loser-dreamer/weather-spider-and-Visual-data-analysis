@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>天气可视化分析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <script src="../static/js/echarts.min.js"></script>
+    <!-- css -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="../static/css/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="../static/css/flexslider.css" rel="stylesheet"/>
+    <link href="../static/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<div id="wrapper" class="home-page">
+    <!-- start header -->
+    <header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index">天气数据爬取及可视化分析</a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index">首页</a></li>
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">城市<b
+                                    class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="dezhou">德州</a></li>
+                                <li><a href="jinan">济南</a></li>
+                                <li><a href="liaocheng">聊城</a></li>
+                                <li><a href="heze">菏泽</a></li>
+                                <li><a href="jining">济宁</a></li>
+                                <li><a href="taian">泰安</a></li>
+{#                                <li><a href="laiwu">莱芜</a></li>#}
+                                <li><a href="zaozhuang">枣庄</a></li>
+                                <li><a href="linyi">临沂</a></li>
+                                <li><a href="rizhao">日照</a></li>
+                                <li><a href="zibo">淄博</a></li>
+                                <li><a href="binzhou">滨州</a></li>
+                                <li><a href="dongying">东营</a></li>
+                                <li><a href="weifang">潍坊</a></li>
+                                <li><a href="qingdao">青岛</a></li>
+                                <li><a href="yantai">烟台</a></li>
+                                <li><a href="weihai">威海</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+
+    <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+    <div id="every_hour" style="width: 1300px;height:600px;margin: 0 auto;"></div>
+    <br><br>
+    <div id="shidu_zhiliang" style="width: 1300px;height:600px;margin: 0 auto;"></div>
+    <br><br>
+    <p style="text-align: center">{{ city_name }}每小时风力，风向，降水量对比</p>
+    <table class="table table-striped" style="width: 1300px;text-align: center;margin: 0 auto;">
+        <tr>
+            <td>时间</td>
+            <td>风力方向</td>
+            <td>风级</td>
+            <td>降水量</td>
+        </tr>
+        {% for index in range(0, 24) %}
+            <tr>
+                <td>{{ time_1d[index] }}</td>
+                <td>{{ fangxiang_1d[index] }}</td>
+                <td>{{ fengji_1d[index] }}</td>
+                <td>{{ jiangshui_1d[index] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br><br>
+
+    <div id="Box">
+        <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+        <div id="main">
+        </div>
+        <div id="main2">
+        <p style="text-align: center">{{ city_name }}未来14天天气，方向，风级</p>
+            <table class="table table-striped" style="margin: 0 auto;">
+                <tr>
+                    <td>日期</td>
+                    <td>天气</td>
+                    <td>方向1</td>
+                    <td>风向2</td>
+                    <td>风级</td>
+                </tr>
+                {% for index in range(0, 14) %}
+                    <tr>
+                        <td>{{ time_14d[index] }}</td>
+                        <td>{{ tianqi_14d[index] }}</td>
+                        <td>{{ fangxiang1_14d[index] }}</td>
+                        <td>{{ fengxiang2_14d[index] }}</td>
+                        <td>{{ fengji_14d[index] }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div id="sub-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="copyright">
+                                <p>
+                                    2021级云计算二班-陈毅博-屠宏展-张翰林
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="social-network">
+                                <li><a href="#" data-placement="top" title="Facebook"><i
+                                        class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" data-placement="top" title="Twitter"><i
+                                        class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" data-placement="top" title="Linkedin"><i
+                                        class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#" data-placement="top" title="Pinterest"><i
+                                        class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#" data-placement="top" title="Google plus"><i
+                                        class="fa fa-google-plus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
+<!-- javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<script type="application/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('every_hour'));
+
+    // 指定图表的配置项和数据
+    // prettier-ignore
+    let dataAxis = {{ time_1d }};
+    // prettier-ignore
+    let data = {{ temp_1d }};
+    let yMax = 500;
+    let dataShadow = [];
+    for (let i = 0; i < data.length; i++) {
+        dataShadow.push(yMax);
+    }
+    option = {
+        title: {
+            text: '{{ city_name }}每小时气温变化',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        xAxis: {
+            data: dataAxis,
+            axisLabel: {
+                inside: true,
+                color: '#ff9818'
+            },
+            axisTick: {
+                show: false
+            },
+            axisLine: {
+                show: false
+            },
+            z: 10
+        },
+        yAxis: {
+            axisLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            axisLabel: {
+                color: '#999'
+            }
+        },
+        dataZoom: [
+            {
+                type: 'inside'
+            }
+        ],
+        series: [
+            {
+                type: 'bar',
+                showBackground: true,
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {offset: 0, color: '#83bff6'},
+                        {offset: 0.5, color: '#188df0'},
+                        {offset: 1, color: '#188df0'}
+                    ])
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {offset: 0, color: '#2378f7'},
+                            {offset: 0.7, color: '#2378f7'},
+                            {offset: 1, color: '#83bff6'}
+                        ])
+                    }
+                },
+                data: data
+            }
+        ]
+    };
+    // Enable data zoom when user click bar.
+    const zoomSize = 6;
+    myChart.on('click', function (params) {
+        console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+        myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue:
+                dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+        });
+    });
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('shidu_zhiliang'));
+
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '{{ city_name }}每小时相对湿度,空气质量可视化分析'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['相对湿度', '空气质量']
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {{ time_1d }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name: '相对湿度',
+                type: 'line',
+                stack: 'Total',
+                data: {{ shidu_1d }}
+            },
+            {
+                name: '空气质量',
+                type: 'line',
+                stack: 'Total',
+                data: {{ air_1d }}
+            },
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+    //未来一周气温变化图
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '{{ city_name }}未来14天气温变化图',
+            left: '40%',
+        },
+        grid: {
+            left: '5%',
+            right: '9%'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            x: 'right',
+            y: 'top',
+            padding: [35, 10, 5, 10],
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: {{ time_14d }}
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} °C'
+            }
+        },
+        series: [
+            {
+                name: '最高温',
+                type: 'line',
+                data: {{ temp_max }},
+                markPoint: {
+                    data: [
+                        {type: 'max', name: 'Max'},
+                        {type: 'min', name: 'Min'}
+                    ]
+                },
+                markLine: {
+                    data: [{type: 'average', name: 'Avg'}]
+                }
+            },
+            {
+                name: '最低温',
+                type: 'line',
+                data: {{ temp_min }},
+                markPoint: {
+                    data: [{name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: 'Avg'},
+                        [
+                            {
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            },
+                            {
+                                symbol: 'circle',
+                                label: {
+                                    position: 'start',
+                                    formatter: 'Max'
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }
+                        ]
+                    ]
+                }
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+<script src="../static/js/jquery.js"></script>
+<script src="../static/js/jquery.easing.1.3.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.fancybox.pack.js"></script>
+<script src="../static/js/jquery.fancybox-media.js"></script>
+<script src="../static/js/jquery.flexslider.js"></script>
+<script src="../static/js/animate.js"></script>
+<!-- Vendor Scripts -->
+<script src="../static/js/modernizr.custom.js"></script>
+<script src="../static/js/jquery.isotope.min.js"></script>
+<script src="../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../static/js/animate.js"></script>
+<script src="../static/js/custom.js"></script>
+</body>
+</html>
